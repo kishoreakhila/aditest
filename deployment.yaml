@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: packetgendeployment
+  labels:
+    app: vFirewall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vFirewall
+  template:
+    metadata:
+      labels:
+        app: vFirewall
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[
+            { "name": "$unprotected_private_net", "interfaceRequest": "eth1" },
+            { "name": "$onap_private_net", "interfaceRequest": "eth2" }
+        ]'
+    spec:
+      containers:
+      - name: packetgendeployment
+        image: electrocucaracha/packetgen
+        imagePullPolicy: IfNotPresent
+        tty: true
+        stdin: true
+        resources:
+          limits:
+            memory: 256Mi
