@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: packetgendeployment
+  name: packetgendeployment #name of the deployment
   labels:
     app: vFirewall
 spec:
   replicas: 1
-  selector:
+  selector: #defines how the deployments finds which pods o manage. In this case we are creating labels
     matchLabels:
       app: vFirewall
-  template:
+  template: #pods are labeled app: nginx using labels
     metadata:
       labels:
         app: vFirewall
-      annotations:
-        k8s.v1.cni.cncf.io/networks: '[
+      annotations: #assignning network namespace perhaps.
+        k8s.v1.cni.cncf.io/networks: '[ 
             { "name": "$unprotected_private_net", "interfaceRequest": "eth1" },
             { "name": "$onap_private_net", "interfaceRequest": "eth2" }
         ]'
-    spec:
+    spec: #indicates pods run 1 container which should have the image from dockerhub. 
       containers:
       - name: packetgendeployment
         image: electrocucaracha/packetgen
