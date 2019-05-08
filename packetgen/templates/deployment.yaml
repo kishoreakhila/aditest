@@ -1,25 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-packgen-deployment
+  name: {{ include "packetgen.fullname" . }}
   labels:
-    app: vFirewall
+    app.kubernetes.io/name: {{ include "packetgen.name" . }}
+    helm.sh/chart: {{ include "packetgen.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: vFirewall
+      app.kubernetes.io/name: {{ include "packetgen.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: vFirewall
+        app.kubernetes.io/name: {{ include "packetgen.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-      - name: {{ .Release.Name }}
-        image: {{ .Values.image.name }}
-        imagePullPolicy: IfNotPresent
-        tty: true
-        stdin: true
-        resources:
-          limits:
-            memory: {{ .Values.resources.memory }}
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
