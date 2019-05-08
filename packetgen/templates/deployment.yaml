@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-demodeployment
+  name: {{ .Release.Name }}-packgen-deployment
   labels:
     app: vFirewall
 spec:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }}
-        image: electrocucaracha/packetgen
+        image: {{ .Values.image.name }}
         imagePullPolicy: IfNotPresent
         tty: true
         stdin: true

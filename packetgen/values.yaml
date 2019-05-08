@@ -3,10 +3,8 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-favoriteDrink: coffee
 image:
-  repository: electrocucaracha/packetgen
-  tag: stable
+  name: akhilak/packetgen
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -30,7 +28,20 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+ # requests:
+ #   cpu: 10m
+ #   memory: 10Mi
+
+
+
+
+
+# resources: {}
   # limits:
   #  cpu: 100m
   #  memory: 128Mi
