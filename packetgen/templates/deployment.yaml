@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-demodeployment
+  labels:
+    app: vFirewall
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vFirewall
+  template:
+    metadata:
+      labels:
+        app: vFirewall
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: electrocucaracha/packetgen
+        imagePullPolicy: IfNotPresent
+        tty: true
+        stdin: true
+        resources:
+          limits:
+            memory: {{ .Values.resources.memory }}
