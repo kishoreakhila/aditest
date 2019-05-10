@@ -19,6 +19,11 @@ spec:
         app: vFirewall
         app.kubernetes.io/name: {{ include "packetgen.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[
+            { "name": unprotected-private-net.yaml, "interfaceRequest": "eth1" },
+            { "name": onap-private-net.yaml, "interfaceRequest": "eth2" }
+        ]'
     spec:
       containers:
         - name: {{ .Chart.Name }}
