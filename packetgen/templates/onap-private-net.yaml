@@ -8,6 +8,6 @@ spec:
     "type": "bridge",
     "ipam": {
         "type": "host-local",
-        "subnet": "10.10.10.0/16"
+        "subnet": {{ .Values.network.onapprivatenetcidr | quote }}
     }
 }'
