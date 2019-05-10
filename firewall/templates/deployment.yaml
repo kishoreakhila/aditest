@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "firewall.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "firewall.name" . }}
+    helm.sh/chart: {{ include "firewall.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "firewall.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: vFirewall
+        app.kubernetes.io/name: {{ include "firewall.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[
+            { "name": {{ .Values.network.unprotectednetworkname | quote }}, "interfaceRequest": "eth1" },
+            { "name": {{ .Values.network.protectednetworkname | quote }}, "interfaceRequest": "eth2" },
+            { "name": {{ .Values.network.onaprivatenetworkname | quote }}, "interfaceRequest": "eth3" }
+        ]'
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

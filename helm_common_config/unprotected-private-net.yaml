@@ -1,0 +1,13 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: {{ .Values.network.unprotectednetworkname | quote }}
+spec:
+  config: '{
+    "name": "unprotected",
+    "type": "bridge",
+    "ipam": {
+        "type": "host-local",
+        "subnet": {{ .Values.network.protectedPrivateNetCidr | quote }}
+    }
+}'

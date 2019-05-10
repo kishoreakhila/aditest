@@ -1,0 +1,13 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: {{ .Values.network.onaprivatenetworkname | quote }}
+spec:
+  config: '{
+    "name": "onap",
+    "type": "bridge",
+    "ipam": {
+        "type": "host-local",
+        "subnet": {{ .Values.network.onapPrivateNetCidr | quote }}
+    }
+}'
