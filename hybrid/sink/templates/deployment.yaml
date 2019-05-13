@@ -21,12 +21,12 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app: vFirewall
         context: darkstat
-      #annotations:
-       # k8s.v1.cni.cncf.io/networks: '[{ "name": "$ovn_multus_network_name"}]'
-        #ovnNetwork: '[
-           # { "name": "$protected_private_net", "ipAddress": "$vsn_private_ip_0", "interface": "eth1", "defaultGateway": "false" },
-           # { "name": "$onap_private_net", "ipAddress": "$vsn_private_ip_1", "interface": "eth2" , "defaultGateway": "false"}
-        #]'
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{ "name": "$ovn_multus_network_name"}]'
+        ovnNetwork: '[
+            { "name": {{ .Values.network.protectedNetworkName | quote }}, "ipAddress": {{ .Values.network.vsnPrivateIp0 | quote }}, "interface": "eth1", "defaultGateway": "false" },
+            { "name": {{ .Values.network.onapPrivateNetworkName | quote }}, "ipAddress": {{ .Values.network.vsnPrivateIp1 | quote }}, "interface": "eth2" , "defaultGateway": "false"}
+        ]'
     spec:
       containers:
         - name: {{ .Chart.Name }}

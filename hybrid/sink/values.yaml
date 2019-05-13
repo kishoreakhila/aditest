@@ -42,6 +42,26 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+network:
+  #demo_artifacts_version=1.3.0
+  vfwPrivateIp0: 192.168.10.3
+  vfwPrivateIp1: 192.168.20.2
+  vfwPrivateIp2: 10.10.100.3
+  vpgPrivateIp0: 192.168.10.2
+  vpgPrivateIp1: 10.0.100.2
+  vsnPrivateIp0: 192.168.20.3
+  vsnPrivateIp1: 10.10.100.4
+  dcaeCollectorIp: 10.0.4.1
+  dcaeCollectorPort: 8081
+  protectedNetGw: 192.168.20.100
+  protectedNetCidr: 192.168.20.0/24
+  protectedPrivateNetCidr: 192.168.10.0/24
+  onapPrivateNetCidr: 10.10.0.0/16
+  protectedNetGw: 192.168.20.100
+  protectedNetworkName: protected-network-net
+  unprotectedNetworkName: unprotected-private-net
+  ovnMultusNetworkName: ovn-networkobj
+  onapPrivateNetworkName: onap-private-net
 
 nodeSelector: {}
 
