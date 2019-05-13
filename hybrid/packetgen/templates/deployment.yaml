@@ -44,11 +44,11 @@ spec:
         VirtletSSHKeys: |
           $ssh_key
         VirtletRootVolumeSize: 5Gi
-        #k8s.v1.cni.cncf.io/networks: '[{ "name": "$ovn_multus_network_name"}]'
-        #ovnNetwork: '[
-           # { "name": "$unprotected_private_net", "ipAddress": "$vpg_private_ip_0", "interface": "eth1" , "defaultGateway": "false"},
-           # { "name": "$onap_private_net", "ipAddress": "$vpg_private_ip_1", "interface": "eth2" , "defaultGateway": "false"}
-       # ]'
+        k8s.v1.cni.cncf.io/networks: '[{ "name": {{.Values.network.ovnMultusNetworkName | quote }} }]'
+        ovnNetwork: '[
+            { "name": {{ .Values.network.unprotectedNetworkName | quote }}, "ipAddress": {{ .Values.network.vpgPrivateIp0 | quote  }}, "interface": "eth1" , "defaultGateway": "false"},
+            { "name": {{ .Values.network.onapPrivateNetworkName | quote }}, "ipAddress": {{ .Values.network.vpgPrivateIp1 | quote }}, "interface": "eth2" , "defaultGateway": "false"}
+        ]'
         kubernetes.io/target-runtime: virtlet.cloud
     spec:
       affinity:
@@ -66,8 +66,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           tty: true
           stdin: true
-          #ports:
-             # containerPort: 8183
+          ports:
+            - containerPort: {{ .Values.service.ports.containerPort }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
