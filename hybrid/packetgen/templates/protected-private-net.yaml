@@ -6,4 +6,4 @@ metadata:
 spec:
   name: {{ .Values.network.protectedNetworkName }}
   subnet: {{ .Values.network.protectedNetCidr }}
-  gateway: {{ .Values.network.protectedNetGw }}
+  gateway: {{ .Values.network.protectedNetGw }}/{{ .Values.gatewayVarible }}
