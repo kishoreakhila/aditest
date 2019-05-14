@@ -44,7 +44,7 @@ spec:
         VirtletSSHKeys: |
          # $ssh_key
         VirtletRootVolumeSize: 5Gi
-        k8s.v1.cni.cncf.io/networks: '[{ "name": "$ovn_multus_network_name"}]'
+        k8s.v1.cni.cncf.io/networks: '[{ "name": {{ .Values.network.ovnMultusNetworkName | quote }}}]'
         ovnNetwork: '[
             { "name": {{ .Values.network.unprotectedNetworkName | quote }}, "ipAddress": {{ .Values.network.vfwPrivateIp0 | quote }}, "interface": "eth1" , "defaultGateway": "false"},
             { "name": {{ .Values.network.protectedNetworkName | quote }}, "ipAddress": {{ .Values.network.vfwPrivateIp1 | quote }}, "interface": "eth2", "defaultGateway": "false" },
