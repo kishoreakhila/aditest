@@ -8,11 +8,13 @@ image:
   repository: akhilak/sink
   tag: latest
   pullPolicy: IfNotPresent
-
+  repo: akhilak/darkstat
+  tag: latest
+  pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
-
+gatewayVariable: 24
 service:
   type: containerPort
   port: 667

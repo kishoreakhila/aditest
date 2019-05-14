@@ -22,7 +22,7 @@ spec:
         app: vFirewall
         context: darkstat
       annotations:
-        k8s.v1.cni.cncf.io/networks: '[{ "name": "$ovn_multus_network_name"}]'
+        k8s.v1.cni.cncf.io/networks: '[{ "name": {{ .Values.network.ovnMultusNetworkName | quote }}}]'
         ovnNetwork: '[
             { "name": {{ .Values.network.protectedNetworkName | quote }}, "ipAddress": {{ .Values.network.vsnPrivateIp0 | quote }}, "interface": "eth1", "defaultGateway": "false" },
             { "name": {{ .Values.network.onapPrivateNetworkName | quote }}, "ipAddress": {{ .Values.network.vsnPrivateIp1 | quote }}, "interface": "eth2" , "defaultGateway": "false"}
@@ -36,11 +36,11 @@ spec:
           stdin: true
           securityContext:
             privileged: true
-       # - name: darkstat
-         # image: electrocucaracha/darkstat
-         # imagePullPolicy: IfNotPresent
-         # tty: true
-         # stdin: true
+        - name: darkstat
+          image:  "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          tty: true
+          stdin: true
           ports:
             - containerPort: {{ .Values.service.port }}
           resources:
