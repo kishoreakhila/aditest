@@ -55,7 +55,6 @@ network:
   unprotectedNetworkName: unprotected-private-net
   ovnMultusNetworkName: ovn-networkobj
   onapPrivateNetworkName: onap-private-net
-  ovnMultusNetworkName: ovn-multus-network-name
 
 nodeSelector: {}
 
