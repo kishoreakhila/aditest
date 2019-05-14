@@ -11,6 +11,7 @@ image:
 
 nameOverride: ""
 fullnameOverride: ""
+gatewayVariable: 24
 
 service:
 #serivce port value for sink service
